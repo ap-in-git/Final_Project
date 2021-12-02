@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Final_Project
 {
-    abstract class Laptop : ILaptop
+    public abstract class Laptop : ILaptop
     {
-        public string Brand { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public string Model { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string Brand { get; set; }
+        public string Model { get; set; }
 
         public abstract void specialServices();
     }
