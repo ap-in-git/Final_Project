@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Final_Project
 {
-    class AppointmentList
+    public class AppointmentList
     {
         private List<Appointment> appointmentList = null;
 
