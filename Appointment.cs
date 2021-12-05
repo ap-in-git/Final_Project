@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Final_Project
 {
-    public class Appointment : Laptop
+    public class Appointment
     {
         public string CustomerName { get; set; }
         public int AppointmentTime { get; set; }
@@ -16,12 +16,9 @@ namespace Final_Project
 
         public string TechnicianName { get; set; }
 
-        Laptop laptop { get; set; }
+        private Laptop laptop = null;
 
+        public Laptop CustomerLaptop { get => laptop; set => laptop = value; }
 
-        public override void specialServices()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

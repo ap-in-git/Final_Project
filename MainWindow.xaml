@@ -27,7 +27,7 @@
         <TextBox HorizontalAlignment="Left" Height="26" Margin="572,318,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="176"/>
         <ComboBox x:Name="modelCmbBox" HorizontalAlignment="Left" Margin="132,192,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
         <TextBox x:Name="technicianNameTxt" HorizontalAlignment="Left" Margin="132,275,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="189" Height="26"/>
-        <ComboBox x:Name="workDoneCmbBox" HorizontalAlignment="Left" Margin="132,232,0,0" VerticalAlignment="Top" Width="120" Height="26" Initialized="WorkDone_Init" SelectionChanged="WorkDone_Change"/>
+        <ComboBox x:Name="workDoneCmbBox" HorizontalAlignment="Left" Margin="132,232,0,0" VerticalAlignment="Top" Width="120" Height="26" Initialized="WorkDone_Init"/>
 
     </Grid>
 </Window>

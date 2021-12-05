@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 
 namespace Final_Project
 {
-    class Razer : Laptop
+    public class Razer : Laptop
     {
-        public override void specialServices()
+
+
+        public override List<string> brandModelsList()
         {
-            throw new NotImplementedException();
+            List<string> razerModels = new() { "Razer Blade 15", "Razer Blade 16", "Razer Blade 16i" };
+            return razerModels;
+
         }
     }
 }

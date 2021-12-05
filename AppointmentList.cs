@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Final_Project
 {
+   
     public class AppointmentList
     {
         private List<Appointment> appointmentList = null;
 
+       
         public List<Appointment> Appointments { get => appointmentList; set => appointmentList = value; }
         public AppointmentList()
         {

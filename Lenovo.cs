@@ -3,14 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Final_Project
 {
-    class Lenovo : Laptop
+   
+    public class Lenovo : Laptop
     {
-        public override void specialServices()
+        public override List<string> brandModelsList()
         {
-            throw new NotImplementedException();
+            List<string> lenovoModels = new() { "Legion 5i", "Legion 6i", "Legion 7i"};
+            return lenovoModels;
+            
         }
+
+
     }
 }

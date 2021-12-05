@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 
 namespace Final_Project
 {
-    class Alienware : Laptop
+    public class Alienware : Laptop
     {
-        public override void specialServices()
+
+
+        public override List<string> brandModelsList()
         {
-            throw new NotImplementedException();
+            List<string> alienModels = new() { "Alien 15", "Alien Fighter", "Legion X" };
+            return alienModels;
+
         }
     }
 }

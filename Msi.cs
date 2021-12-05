@@ -6,11 +6,15 @@ using System.Threading.Tasks;
 
 namespace Final_Project
 {
-    class Msi : Laptop
+    public class Msi : Laptop
     {
-        public override void specialServices()
+  
+
+        public override List<string> brandModelsList()
         {
-            throw new NotImplementedException();
+            List<string> msiModels = new() { "MSI GE", "MSI GF", "MSI GF Thin" };
+            return msiModels;
         }
+
     }
 }
