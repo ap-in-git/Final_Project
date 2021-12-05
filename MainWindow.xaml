@@ -6,26 +6,66 @@
         xmlns:local="clr-namespace:Final_Project"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid Background="Gray">
+    <Grid Background="BlanchedAlmond">
+        <Grid.Resources>
+            <Style x:Key="CustomTextBoxTextStyle" TargetType="TextBox">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <Border x:Name="bg" BorderBrush="#FF825E5E" BorderThickness="1">
+                                <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+
+                                <Trigger Property="Validation.HasError" Value="True">
+                                    <Trigger.Setters>
+                                        <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self},Path=(Validation.Errors)[0].ErrorContent}"/>
+                                        <Setter Property="BorderThickness" TargetName="bg" Value="2"/>
+                                        <Setter Property="BorderBrush" TargetName="bg" Value="Red"/>
+                                    </Trigger.Setters>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Grid.Resources>
         <TextBox x:Name="customerNameTxt" HorizontalAlignment="Left" Margin="132,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="189" Height="26"/>
         <Label Content="Name:"  HorizontalAlignment="Left" Height="26" Margin="10,70,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
         <Label Content="Credit Card No:"  HorizontalAlignment="Left" Height="26" Margin="10,111,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
-        <TextBox x:Name="creditCardNoTxt" MaxLength="16" HorizontalAlignment="Left" Margin="132,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="189" Height="26"/>
-        <Label Content="Laptop Type:"  HorizontalAlignment="Left" Height="26" Margin="10,151,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
-        <ComboBox x:Name="laptopCmbBox" HorizontalAlignment="Left" Margin="132,151,0,0" VerticalAlignment="Top" Width="120" Height="26" Initialized="LaptopCmbBox_Init" SelectionChanged="laptopCmbBox_Changed"/>
+        <TextBox x:Name="creditCardNoTxt" MaxLength="16" HorizontalAlignment="Left" Margin="132,111,0,0" 
+                 TextWrapping="Wrap" VerticalAlignment="Top" Width="189" Height="26" Style="{StaticResource CustomTextBoxTextStyle}">
+            <TextBox.Text>
+                <Binding Path="Appointment.CreditCardNo" NotifyOnValidationError="false">
+                    <Binding.ValidationRules>
+                        <local:CreditCardRule />
+                    </Binding.ValidationRules>
+                </Binding>
+            </TextBox.Text>
+            <Validation.ErrorTemplate>
+                <ControlTemplate>
+                    <StackPanel>
+                        <AdornedElementPlaceholder x:Name="textBox"/>
+                        <TextBlock Text="{Binding [0].ErrorContent}" Foreground="Red"/>
+                    </StackPanel>
+                </ControlTemplate>
+            </Validation.ErrorTemplate>
+        </TextBox>
+        <Label Content="Laptop Type:"  HorizontalAlignment="Left" Height="26" Margin="10,155,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
+        <ComboBox x:Name="laptopCmbBox" HorizontalAlignment="Left" Margin="132,155,0,0" VerticalAlignment="Top" Width="120" Height="26" Initialized="LaptopCmbBox_Init" SelectionChanged="laptopCmbBox_Changed"/>
         <Label Content="Appointment:"  HorizontalAlignment="Left" Height="26" Margin="10,28,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
         <ComboBox x:Name="appTimeCmbBox" HorizontalAlignment="Left" Margin="132,28,0,0" VerticalAlignment="Top" Width="120" Height="26" Initialized="AppTimeCmbBox_Init" SelectionChanged="appTimeCmbBox_Changed"/>
-        <Label Content="Brand:"  HorizontalAlignment="Left" Height="26" Margin="10,191,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
+        <Label Content="Brand:"  HorizontalAlignment="Left" Height="26" Margin="10,194,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
         <Label Content="Work Done:"  HorizontalAlignment="Left" Height="26" Margin="10,272,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
         <Label Content="Technician:"  HorizontalAlignment="Left" Height="26" Margin="10,349,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
-        <DataGrid x:Name="MyDataGrid" Margin="353,19,28,132" AutoGenerateColumns="False"/>
+        <DataGrid x:Name="MyDataGrid" Margin="394,19,28,136" AutoGenerateColumns="False"/>
         <Button x:Name="addBtn" Content="Add" HorizontalAlignment="Left" Height="24" Margin="124,386,0,0" VerticalAlignment="Top" Width="80" RenderTransformOrigin="0.715,0.618" Click="AddBtn_Click"/>
         <Button x:Name="saveButton" Content="Save" HorizontalAlignment="Left" Height="24" Margin="400,377,0,0" VerticalAlignment="Top" Width="80" RenderTransformOrigin="0.715,0.618" Click="SaveAllBtn_Click"/>
         <Button x:Name="getButton" Content="Retrieve All" HorizontalAlignment="Left" Height="24" Margin="668,377,0,0" VerticalAlignment="Top" Width="80" RenderTransformOrigin="0.715,0.618" Click="GetAllButton_Click"/>
         <Label Content="Search By:"  HorizontalAlignment="Left" Height="26" Margin="356,318,0,0" VerticalAlignment="Top" Width="75" FontWeight="Bold"/>
         <ComboBox HorizontalAlignment="Left" Margin="436,318,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
         <TextBox HorizontalAlignment="Left" Height="26" Margin="572,318,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="176"/>
-        <ComboBox x:Name="brandCmbBox" HorizontalAlignment="Left" Margin="132,192,0,0" VerticalAlignment="Top" Width="120" Height="26" Initialized="BrandCmbBox_Init"/>
+        <ComboBox x:Name="brandCmbBox" HorizontalAlignment="Left" Margin="132,195,0,0" VerticalAlignment="Top" Width="120" Height="26" Initialized="BrandCmbBox_Init"/>
         <TextBox x:Name="technicianNameTxt" HorizontalAlignment="Left" Margin="132,348,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="189" Height="26">
             <UIElement.RenderTransform>
                 <MatrixTransform/>
