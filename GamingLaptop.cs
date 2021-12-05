@@ -8,12 +8,12 @@ using System.Xml.Serialization;
 namespace Final_Project
 {
    
-    public class Lenovo : Laptop
+    public class GamingLaptop : Laptop
     {
-        public override List<string> brandModelsList()
+        public override List<string> BrandModelList()
         {
-            List<string> lenovoModels = new() { "Legion 5i", "Legion 6i", "Legion 7i"};
-            return lenovoModels;
+            List<string> gamingLaptopModels = new() { "Lenovo", "AlienWare", "MSI"};
+            return gamingLaptopModels;
             
         }
 

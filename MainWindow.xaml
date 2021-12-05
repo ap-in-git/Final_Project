@@ -11,23 +11,33 @@
         <Label Content="Name:"  HorizontalAlignment="Left" Height="26" Margin="10,70,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
         <Label Content="Credit Card No:"  HorizontalAlignment="Left" Height="26" Margin="10,111,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
         <TextBox x:Name="creditCardNoTxt" MaxLength="16" HorizontalAlignment="Left" Margin="132,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="189" Height="26"/>
-        <Label Content="Brand:"  HorizontalAlignment="Left" Height="26" Margin="10,151,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
-        <ComboBox x:Name="brandCmbBox" HorizontalAlignment="Left" Margin="132,151,0,0" VerticalAlignment="Top" Width="120" Height="26" Initialized="BrandCmbBox_Init" SelectionChanged="BrandCmbBox_Change"/>
+        <Label Content="Laptop Type:"  HorizontalAlignment="Left" Height="26" Margin="10,151,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
+        <ComboBox x:Name="laptopCmbBox" HorizontalAlignment="Left" Margin="132,151,0,0" VerticalAlignment="Top" Width="120" Height="26" Initialized="LaptopCmbBox_Init"/>
         <Label Content="Appointment:"  HorizontalAlignment="Left" Height="26" Margin="10,28,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
-        <ComboBox x:Name="appTimeCmbBox" HorizontalAlignment="Left" Margin="132,28,0,0" VerticalAlignment="Top" Width="120" Height="26" Initialized="AppTimeCmbBox_Init"/>
-        <Label Content="Model:"  HorizontalAlignment="Left" Height="26" Margin="10,191,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
-        <Label Content="Work Done:"  HorizontalAlignment="Left" Height="26" Margin="10,235,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
-        <Label Content="Technician:"  HorizontalAlignment="Left" Height="26" Margin="10,276,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
+        <ComboBox x:Name="appTimeCmbBox" HorizontalAlignment="Left" Margin="132,28,0,0" VerticalAlignment="Top" Width="120" Height="26" Initialized="AppTimeCmbBox_Init" SelectionChanged="appTimeCmbBox_Changed"/>
+        <Label Content="Brand:"  HorizontalAlignment="Left" Height="26" Margin="10,191,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
+        <Label Content="Work Done:"  HorizontalAlignment="Left" Height="26" Margin="10,272,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
+        <Label Content="Technician:"  HorizontalAlignment="Left" Height="26" Margin="10,313,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
         <DataGrid x:Name="MyDataGrid" Margin="353,19,28,132" AutoGenerateColumns="False"/>
-        <Button x:Name="addBtn" Content="Add" HorizontalAlignment="Left" Height="24" Margin="124,344,0,0" VerticalAlignment="Top" Width="80" RenderTransformOrigin="0.715,0.618" Click="AddBtn_Click"/>
+        <Button x:Name="addBtn" Content="Add" HorizontalAlignment="Left" Height="24" Margin="124,381,0,0" VerticalAlignment="Top" Width="80" RenderTransformOrigin="0.715,0.618" Click="AddBtn_Click"/>
         <Button x:Name="saveButton" Content="Save" HorizontalAlignment="Left" Height="24" Margin="400,377,0,0" VerticalAlignment="Top" Width="80" RenderTransformOrigin="0.715,0.618" Click="SaveAllBtn_Click"/>
         <Button x:Name="getButton" Content="Retrieve All" HorizontalAlignment="Left" Height="24" Margin="668,377,0,0" VerticalAlignment="Top" Width="80" RenderTransformOrigin="0.715,0.618" Click="GetAllButton_Click"/>
         <Label Content="Search By:"  HorizontalAlignment="Left" Height="26" Margin="356,318,0,0" VerticalAlignment="Top" Width="75" FontWeight="Bold"/>
         <ComboBox HorizontalAlignment="Left" Margin="436,318,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
         <TextBox HorizontalAlignment="Left" Height="26" Margin="572,318,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="176"/>
-        <ComboBox x:Name="modelCmbBox" HorizontalAlignment="Left" Margin="132,192,0,0" VerticalAlignment="Top" Width="120" Height="26"/>
-        <TextBox x:Name="technicianNameTxt" HorizontalAlignment="Left" Margin="132,275,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="189" Height="26"/>
-        <ComboBox x:Name="workDoneCmbBox" HorizontalAlignment="Left" Margin="132,232,0,0" VerticalAlignment="Top" Width="120" Height="26" Initialized="WorkDone_Init"/>
+        <ComboBox x:Name="brandCmbBox" HorizontalAlignment="Left" Margin="132,192,0,0" VerticalAlignment="Top" Width="120" Height="26" Initialized="BrandCmbBox_Init"/>
+        <TextBox x:Name="technicianNameTxt" HorizontalAlignment="Left" Margin="132,312,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="189" Height="26">
+            <UIElement.RenderTransform>
+                <MatrixTransform/>
+            </UIElement.RenderTransform>
+        </TextBox>
+        <ComboBox x:Name="workDoneCmbBox" HorizontalAlignment="Left" Margin="132,269,0,0" VerticalAlignment="Top" Width="120" Height="26" Initialized="WorkDone_Init"/>
+        <Label Content="Model:"  HorizontalAlignment="Left" Height="26" Margin="10,233,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
+        <TextBox x:Name="modelTxt" HorizontalAlignment="Left" Margin="132,232,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="189" Height="26">
+            <TextBox.RenderTransform>
+                <MatrixTransform/>
+            </TextBox.RenderTransform>
+        </TextBox>
 
     </Grid>
 </Window>

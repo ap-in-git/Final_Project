@@ -8,7 +8,9 @@ namespace Final_Project
 {
     interface ILaptop
     {
+        string LaptopType { get; set; }
         string Brand { get; set; }
+
         string Model { get; set; }
     }
 }

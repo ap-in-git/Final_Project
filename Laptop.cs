@@ -7,16 +7,17 @@ using System.Xml.Serialization;
 
 namespace Final_Project
 {
-    [XmlInclude(typeof(Lenovo))]
-    [XmlInclude(typeof(Msi))]
-    [XmlInclude(typeof(Razer))]
-    [XmlInclude(typeof(Alienware))]
+    [XmlInclude(typeof(GamingLaptop))]
+    [XmlInclude(typeof(UltraBook))]
+    [XmlInclude(typeof(NoteBook))]
+    [XmlInclude(typeof(NetBook))]
     public abstract class Laptop : ILaptop
     {
-        public string Brand { get; set; }
+        public string LaptopType { get; set; }
         public string Model { get; set; }
 
+        public string Brand { get; set; }
 
-        public abstract List<string> brandModelsList();
+        public abstract List<string> BrandModelList();
     }
 }
