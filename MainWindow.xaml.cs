@@ -257,8 +257,6 @@ namespace Final_Project
                     appointment.TechnicianName = retrieveAppointment.TechnicianName;
 
                     AppointmentMade.Add(appointment);
-
-                    appTimeCmbBox.Items.Remove(appointment.AppointmentTime);
                 }
 
                 //Using LINQ to search via field
@@ -289,12 +287,7 @@ namespace Final_Project
                     MyDataGrid.ItemsSource = AppointmentMade;
                 }
 
-                var arr = appTimeCmbBox.Items.Cast<Object>().Select(item => item.ToString()).ToArray();
-
-                List<string> list = new List<string>(arr);
-
                 FillDataContext();
-
                 SetDataGrid();
             }
         }
