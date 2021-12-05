@@ -43,15 +43,11 @@ namespace Final_Project
         public ObservableCollection<string> LaptopTypeList { get; set; }
         public ObservableCollection<string> BrandList { get; set; }
 
-
         public ObservableCollection<string> WorkDoneList { get; set; }
         public ObservableCollection<int> AppTimeList { get; set; }
 
         Laptop laptop = null;
-
-
         public ObservableCollection<Appointment> AppointmentMade { get => appointmentMade; set => appointmentMade = value; }
-
         public ObservableCollection<Appointment> TempAppointmentMade { get => tempAppointmentMade; set => tempAppointmentMade = value; }
 
         public MainWindow()
@@ -74,7 +70,6 @@ namespace Final_Project
             for (int i = workStart; i <= workEnd; i++)
             {
                 appTimeCmbBox.Items.Add(i);
-
             }
 
         }
@@ -153,7 +148,8 @@ namespace Final_Project
         //Add button. This button is responsible for transferring data from the fields to the datagrid.
         private void AddBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (!Validation.GetHasError(creditCardNoTxt))
+            AppointmentMade = new ObservableCollection<Appointment>();
+            if (!Validation.GetHasError(creditCardNoTxt) && ValidateFields())
             {
                 var arr = appTimeCmbBox.Items.Cast<int>().Select(item => item).ToArray();
 
@@ -189,17 +185,26 @@ namespace Final_Project
                 MessageBoxResult result = MessageBox.Show("Do you want to save them all?", "Save all client", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
-                    SaveAll();
+                    SaveAll(TempAppointmentMade);
+                    ClearGrid();
+                }
+            }
+            else if (AppointmentMade.Count > 0)
+            {
+                MessageBoxResult result = MessageBox.Show("Do you want to update your data?", "Save all client", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    SaveAll(AppointmentMade);
                     ClearGrid();
                 }
             }
         }
 
         //Saving the data into XML format
-        private void SaveAll()
+        private void SaveAll(ObservableCollection<Appointment> app)
         {
             appList.Clear();
-            foreach (Appointment appointment in TempAppointmentMade)
+            foreach (Appointment appointment in app)
             {
                 appList.Add(appointment);
             }
@@ -221,7 +226,7 @@ namespace Final_Project
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    SaveAll();
+                    SaveAll(TempAppointmentMade);
                 }
             }
             ClearGrid();
@@ -347,6 +352,15 @@ namespace Final_Project
             MyDataGrid.Columns.Add(new DataGridComboBoxColumn { Header = "Work Done", SelectedValueBinding = new Binding("WorkDone") { Mode = BindingMode.TwoWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged }, ElementStyle = workStyle, EditingElementStyle = workStyle });
 
             MyDataGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("TechnicianName"), Header = "Technician" });
+        }
+
+        //TODO: Add a error message in UI
+        private bool ValidateFields()
+        {
+            bool validate = customerNameTxt.Text != String.Empty  && laptopCmbBox.SelectedIndex != -1 && brandCmbBox.SelectedIndex != -1
+                && modelTxt.Text != String.Empty && workDoneCmbBox.SelectedIndex != -1 && technicianNameTxt.Text != String.Empty;
+
+            return validate;
         }
 
     }

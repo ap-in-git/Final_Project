@@ -60,11 +60,11 @@
         <Label Content="Technician:"  HorizontalAlignment="Left" Height="26" Margin="10,342,0,0" VerticalAlignment="Top" Width="117" FontWeight="Bold"/>
         <DataGrid x:Name="MyDataGrid" Margin="400,10,28,158" AutoGenerateColumns="False"/>
         <Button x:Name="addBtn" Content="Add" HorizontalAlignment="Left" Height="24" Margin="124,379,0,0" VerticalAlignment="Top" Width="80" RenderTransformOrigin="0.715,0.618" Click="AddBtn_Click"/>
-        <Button x:Name="saveButton" Content="Save" HorizontalAlignment="Left" Height="24" Margin="486,356,0,0" VerticalAlignment="Top" Width="80" RenderTransformOrigin="0.715,0.618" Click="SaveAllBtn_Click"/>
-        <Button x:Name="getButton" Content="Retrieve All" HorizontalAlignment="Left" Height="24" Margin="577,356,0,0" VerticalAlignment="Top" Width="80" RenderTransformOrigin="0.715,0.618" Click="GetAllButton_Click"/>
+        <Button x:Name="saveButton" Content="Save" HorizontalAlignment="Left" Height="24" Margin="546,341,0,0" VerticalAlignment="Top" Width="80" RenderTransformOrigin="0.715,0.618" Click="SaveAllBtn_Click"/>
+        <Button x:Name="getButton" Content="Search" HorizontalAlignment="Left" Height="24" Margin="692,288,0,0" VerticalAlignment="Top" Width="80" RenderTransformOrigin="0.715,0.618" Click="GetAllButton_Click"/>
         <Label Content="Search By:"  HorizontalAlignment="Left" Height="26" Margin="335,286,0,0" VerticalAlignment="Top" Width="75" FontWeight="Bold"/>
         <ComboBox x:Name="searchCmbBox" HorizontalAlignment="Left" Margin="414,286,0,0" VerticalAlignment="Top" Width="120" Height="26" SelectionChanged="SearchCmbBox_Changed" Initialized="SearchCmbBox_Init"/>
-        <TextBox x:Name="searchTxt" HorizontalAlignment="Left" Height="26" Margin="546,286,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="175"/>
+        <TextBox x:Name="searchTxt" HorizontalAlignment="Left" Height="26" Margin="546,286,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="141"/>
         <ComboBox x:Name="brandCmbBox" HorizontalAlignment="Left" Margin="132,176,0,0" VerticalAlignment="Top" Width="120" Height="26" Initialized="BrandCmbBox_Init"/>
         <TextBox x:Name="technicianNameTxt" HorizontalAlignment="Left" Margin="132,341,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="189" Height="26">
             <UIElement.RenderTransform>
