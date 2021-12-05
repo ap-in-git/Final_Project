@@ -28,6 +28,8 @@ namespace Final_Project
         public enum LaptopTypeEnum { GamingLaptop, NetBook, UltraBook, NoteBook }
         public enum BrandEnum { Lenovo, Asus, MSI, Alienware, Dell, Gigabyte }
 
+        public List<string> searchList = new() { "All", "Customer Name", "Technician Name", "Laptop Brand" };
+
         public enum WorkDoneEnum { Cleaning, Installing, Fixing }
 
         AppointmentList appList = new();
@@ -36,6 +38,7 @@ namespace Final_Project
         public Appointment Appointment { get => appointment; set => appointment = value; }
 
         ObservableCollection<Appointment> appointmentMade = null;
+        ObservableCollection<Appointment> tempAppointmentMade = null;
 
         public ObservableCollection<string> LaptopTypeList { get; set; }
         public ObservableCollection<string> BrandList { get; set; }
@@ -49,15 +52,17 @@ namespace Final_Project
 
         public ObservableCollection<Appointment> AppointmentMade { get => appointmentMade; set => appointmentMade = value; }
 
+        public ObservableCollection<Appointment> TempAppointmentMade { get => tempAppointmentMade; set => tempAppointmentMade = value; }
+
         public MainWindow()
         {
             InitializeComponent();
             AppointmentMade = new ObservableCollection<Appointment>();
+            TempAppointmentMade = new ObservableCollection<Appointment>();
             LaptopTypeList = new ObservableCollection<string>(Enum.GetNames(typeof(LaptopTypeEnum)));
             WorkDoneList = new ObservableCollection<string>(Enum.GetNames(typeof(WorkDoneEnum)));
             BrandList = new ObservableCollection<string>();
             addBtn.IsEnabled = false;
-
             AppTimeList = new ObservableCollection<int>();
             DataContext = this;
 
@@ -85,10 +90,15 @@ namespace Final_Project
             brandCmbBox.ItemsSource = Enum.GetNames(typeof(BrandEnum));
         }
 
+        //Initialization of work done combo box
+        private void WorkDone_Init(object sender, EventArgs e)
+        {
+            workDoneCmbBox.ItemsSource = Enum.GetNames(typeof(WorkDoneEnum));
 
+        }
 
-        //Brand of every laptop type. TODO: Add possible overriding method here
-        private void LaptopModel(string selectedText)
+        //Brand of every laptop type.
+        private void LaptopModel(string selectedText, bool flag)
         {
             BrandList = new ObservableCollection<string>(Enum.GetNames(typeof(BrandEnum)));
             if (selectedText == "GamingLaptop")
@@ -108,46 +118,48 @@ namespace Final_Project
                 laptop = new NetBook();
             }
 
-            specialWorkTxt.Text = laptop.SpecialWorkDone();
+            //Flag is for disabling the text field if user use the grid for retrieving values.
+            if (flag)
+            {
+                specialWorkTxt.Text = laptop.SpecialWorkDone();
+            }
             specialWorkTxt.IsEnabled = false;
         }
 
-
-        //Initialization of work done combo box
-        private void WorkDone_Init(object sender, EventArgs e)
+        private void AppTimeCmbBox_Changed(object sender, SelectionChangedEventArgs e)
         {
-            workDoneCmbBox.ItemsSource = Enum.GetNames(typeof(WorkDoneEnum));
+            addBtn.IsEnabled = appTimeCmbBox.SelectedIndex != -1 ? true : false;
+        }
 
+        private void LaptopCmbBox_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            LaptopModel((string)laptopCmbBox.SelectedItem, true);
         }
 
 
-        private void appTimeCmbBox_Changed(object sender, SelectionChangedEventArgs e)
+        private void SearchCmbBox_Changed(object sender, SelectionChangedEventArgs e)
         {
-            if (appTimeCmbBox.SelectedIndex == -1)
-            {
-                addBtn.IsEnabled = false;
-            }
-            else
-            {
-                addBtn.IsEnabled = true;
-            }
+            searchlbl.IsEnabled = false;
+            searchlbl.Content = "";
+            searchTxt.IsEnabled = searchCmbBox.SelectedIndex != 0;
         }
 
-        private void laptopCmbBox_Changed(object sender, SelectionChangedEventArgs e)
+        private void SearchCmbBox_Init(object sender, EventArgs e)
         {
-            LaptopModel((string)laptopCmbBox.SelectedItem);
+            searchCmbBox.ItemsSource = searchList;
         }
 
 
         //Add button. This button is responsible for transferring data from the fields to the datagrid.
         private void AddBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (!Validation.GetHasError(creditCardNoTxt)) {
+            if (!Validation.GetHasError(creditCardNoTxt))
+            {
                 var arr = appTimeCmbBox.Items.Cast<int>().Select(item => item).ToArray();
 
                 AppTimeList = new ObservableCollection<int>(arr);
                 Appointment appointment = new();
-                LaptopModel((string)laptopCmbBox.SelectedItem);
+                LaptopModel((string)laptopCmbBox.SelectedItem, true);
                 appointment.CustomerLaptop = laptop;
                 appointment.AppointmentTime = (int)appTimeCmbBox.SelectedItem;
                 appointment.CustomerName = customerNameTxt.Text;
@@ -161,40 +173,18 @@ namespace Final_Project
                 appTimeCmbBox.Items.Remove(appointment.AppointmentTime);
 
                 string selectedText = appointment.CustomerLaptop.LaptopType;
-                AppointmentMade.Add(appointment);
+                TempAppointmentMade.Add(appointment);
 
-                MyDataGrid.ItemsSource = AppointmentMade;
-
-                MyDataGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("AppointmentTime"), Header = "Time", IsReadOnly = true });
-                MyDataGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("CustomerName"), Header = "Name" });
-                MyDataGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("CreditCardNo"), Header = "Credit Card" });
-
-                var style = new Style(typeof(ComboBox));
-                style.Setters.Add(new Setter(ComboBox.ItemsSourceProperty, new Binding("DataContext.LaptopTypeList") { RelativeSource = new RelativeSource { AncestorType = typeof(Window) } }));
-                MyDataGrid.Columns.Add(new DataGridComboBoxColumn { Header = "Brand", SelectedValueBinding = new Binding("CustomerLaptop.LaptopType") { Mode = BindingMode.TwoWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged }, ElementStyle = style, EditingElementStyle = style });
-
-                var modelStyle = new Style(typeof(ComboBox));
-                modelStyle.Setters.Add(new Setter(ComboBox.ItemsSourceProperty, new Binding("DataContext.BrandList") { RelativeSource = new RelativeSource { AncestorType = typeof(Window) } }));
-                MyDataGrid.Columns.Add(new DataGridComboBoxColumn { Header = "Model", SelectedValueBinding = new Binding("CustomerLaptop.Brand") { Mode = BindingMode.TwoWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged }, ElementStyle = modelStyle, EditingElementStyle = modelStyle });
-
-                MyDataGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("CustomerLaptop.Model"), Header = "Model" });
-
-                var workStyle = new Style(typeof(ComboBox));
-                workStyle.Setters.Add(new Setter(ComboBox.ItemsSourceProperty, new Binding("DataContext.WorkDoneList") { RelativeSource = new RelativeSource { AncestorType = typeof(Window) } }));
-                MyDataGrid.Columns.Add(new DataGridComboBoxColumn { Header = "Work Done", SelectedValueBinding = new Binding("WorkDone") { Mode = BindingMode.TwoWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged }, ElementStyle = workStyle, EditingElementStyle = workStyle });
-
-                MyDataGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("TechnicianName"), Header = "Technician" });
-
+                MyDataGrid.ItemsSource = TempAppointmentMade;
+                SetDataGrid();
                 ClearFields();
             }
         }
 
-
-
         //Save Button. Responsible for saving the values in the datagrid to XML.
         private void SaveAllBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (AppointmentMade.Count > 0)
+            if (TempAppointmentMade.Count > 0)
             {
                 MessageBoxResult result = MessageBox.Show("Do you want to save them all?", "Save all client", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
@@ -209,7 +199,7 @@ namespace Final_Project
         private void SaveAll()
         {
             appList.Clear();
-            foreach (Appointment appointment in AppointmentMade)
+            foreach (Appointment appointment in TempAppointmentMade)
             {
                 appList.Add(appointment);
             }
@@ -225,7 +215,7 @@ namespace Final_Project
         {
             //This is for the datagrid if it contains unsave items
             MessageBoxResult result = MessageBoxResult.No;
-            if (AppointmentMade.Count > 0)
+            if (null != TempAppointmentMade && TempAppointmentMade.Count > 0)
             {
                 result = MessageBox.Show("You have items in the grid. Do you want to save them all?", "Save all client", MessageBoxButton.YesNo);
 
@@ -236,61 +226,77 @@ namespace Final_Project
             }
             ClearGrid();
 
-            //Open the file written below and read values from it.
-            XmlSerializer serializer = new(typeof(AppointmentList), new Type[] { typeof(Appointment) });
-            TextReader tr = new StreamReader("Appointment.xml");
-            appList = (AppointmentList)serializer.Deserialize(tr);
-            tr.Close();
-
-            for (int i = 0; i < appList.Count(); i++)
+            string searchText = searchTxt.Text;
+            if (searchCmbBox.SelectedIndex == -1)
             {
-                Appointment retrieveAppointment = appList[i];
-                Appointment appointment = new();
-                LaptopModel(retrieveAppointment.CustomerLaptop.LaptopType);
-                appointment.CustomerLaptop = laptop;
-                appointment.AppointmentTime = retrieveAppointment.AppointmentTime;
-                appointment.CustomerName = retrieveAppointment.CustomerName;
-                appointment.CreditCardNo = retrieveAppointment.CreditCardNo;
-                appointment.CustomerLaptop.LaptopType = retrieveAppointment.CustomerLaptop.LaptopType;
-                appointment.CustomerLaptop.Brand = retrieveAppointment.CustomerLaptop.Brand;
-                appointment.CustomerLaptop.Model = retrieveAppointment.CustomerLaptop.Model;
-                appointment.WorkDone = retrieveAppointment.WorkDone;
-                appointment.TechnicianName = retrieveAppointment.TechnicianName;
-
-                AppointmentMade.Add(appointment);
-
-                appTimeCmbBox.Items.Remove(appointment.AppointmentTime);
+                searchlbl.IsEnabled = true;
+                searchlbl.Content = "Please select one";
+                searchlbl.Foreground = Brushes.Red;
             }
+            else
+            {
+                //Open the file written below and read values from it.
+                XmlSerializer serializer = new(typeof(AppointmentList), new Type[] { typeof(Appointment) });
+                TextReader tr = new StreamReader("Appointment.xml");
+                appList = (AppointmentList)serializer.Deserialize(tr);
+                tr.Close();
 
-            MyDataGrid.ItemsSource = AppointmentMade;
+                for (int i = 0; i < appList.Count(); i++)
+                {
+                    Appointment retrieveAppointment = appList[i];
+                    Appointment appointment = new();
+                    LaptopModel(retrieveAppointment.CustomerLaptop.LaptopType, false);
+                    appointment.CustomerLaptop = laptop;
+                    appointment.AppointmentTime = retrieveAppointment.AppointmentTime;
+                    appointment.CustomerName = retrieveAppointment.CustomerName;
+                    appointment.CreditCardNo = retrieveAppointment.CreditCardNo;
+                    appointment.CustomerLaptop.LaptopType = retrieveAppointment.CustomerLaptop.LaptopType;
+                    appointment.CustomerLaptop.Brand = retrieveAppointment.CustomerLaptop.Brand;
+                    appointment.CustomerLaptop.Model = retrieveAppointment.CustomerLaptop.Model;
+                    appointment.WorkDone = retrieveAppointment.WorkDone;
+                    appointment.TechnicianName = retrieveAppointment.TechnicianName;
 
-            var arr = appTimeCmbBox.Items.Cast<Object>().Select(item => item.ToString()).ToArray();
+                    AppointmentMade.Add(appointment);
 
-            List<string> list = new List<string>(arr);
+                    appTimeCmbBox.Items.Remove(appointment.AppointmentTime);
+                }
 
-            FillDataContext();
+                //Using LINQ to search via field
+                if (searchCmbBox.SelectedIndex == 1)
+                {
 
-            MyDataGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("AppointmentTime"), Header = "Time" });
-            MyDataGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("CustomerName"), Header = "Name" });
-            MyDataGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("CreditCardNo"), Header = "Credit Card" });
+                    var query = from a in AppointmentMade
+                                where a.CustomerName == searchText
+                                select a;
+                    MyDataGrid.ItemsSource = query;
+                }
+                else if (searchCmbBox.SelectedIndex == 2)
+                {
+                    var query = from a in AppointmentMade
+                                where a.TechnicianName == searchText
+                                select a;
+                    MyDataGrid.ItemsSource = query;
+                }
+                else if (searchCmbBox.SelectedIndex == 3)
+                {
+                    var query = from a in AppointmentMade
+                                where a.CustomerLaptop.Brand == searchText
+                                select a;
+                    MyDataGrid.ItemsSource = query;
+                }
+                else
+                {
+                    MyDataGrid.ItemsSource = AppointmentMade;
+                }
 
+                var arr = appTimeCmbBox.Items.Cast<Object>().Select(item => item.ToString()).ToArray();
 
+                List<string> list = new List<string>(arr);
 
-            var style = new Style(typeof(ComboBox));
-            style.Setters.Add(new Setter(ComboBox.ItemsSourceProperty, new Binding("DataContext.LaptopTypeList") { RelativeSource = new RelativeSource { AncestorType = typeof(Window) } }));
-            MyDataGrid.Columns.Add(new DataGridComboBoxColumn { Header = "Brand", SelectedValueBinding = new Binding("CustomerLaptop.LaptopType") { Mode = BindingMode.TwoWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged }, ElementStyle = style, EditingElementStyle = style });
+                FillDataContext();
 
-            var modelStyle = new Style(typeof(ComboBox));
-            modelStyle.Setters.Add(new Setter(ComboBox.ItemsSourceProperty, new Binding("DataContext.BrandList") { RelativeSource = new RelativeSource { AncestorType = typeof(Window) } }));
-            MyDataGrid.Columns.Add(new DataGridComboBoxColumn { Header = "Model", SelectedValueBinding = new Binding("CustomerLaptop.Brand") { Mode = BindingMode.TwoWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged }, ElementStyle = modelStyle, EditingElementStyle = modelStyle });
-
-            MyDataGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("CustomerLaptop.Model"), Header = "Model" });
-
-            var workStyle = new Style(typeof(ComboBox));
-            workStyle.Setters.Add(new Setter(ComboBox.ItemsSourceProperty, new Binding("DataContext.WorkDoneList") { RelativeSource = new RelativeSource { AncestorType = typeof(Window) } }));
-            MyDataGrid.Columns.Add(new DataGridComboBoxColumn { Header = "Work Done", SelectedValueBinding = new Binding("WorkDone") { Mode = BindingMode.TwoWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged }, ElementStyle = workStyle, EditingElementStyle = workStyle });
-
-            MyDataGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("TechnicianName"), Header = "Technician" });
+                SetDataGrid();
+            }
         }
 
         //Need to fill datacontext for combobox value to load in datagrid upon retrieving.
@@ -309,6 +315,8 @@ namespace Final_Project
             laptopCmbBox.SelectedIndex = -1;
             workDoneCmbBox.SelectedIndex = -1;
             technicianNameTxt.Clear();
+            specialWorkTxt.Clear();
+            modelTxt.Clear();
             laptop = null;
         }
 
@@ -320,7 +328,32 @@ namespace Final_Project
             MyDataGrid.Items.Clear();
             MyDataGrid.Items.Refresh();
             AppointmentMade = new ObservableCollection<Appointment>();
+            TempAppointmentMade = new ObservableCollection<Appointment>();
 
+        }
+
+        //Refactored setting of data in the datagrid via add button or search button
+        private void SetDataGrid()
+        {
+            MyDataGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("AppointmentTime"), Header = "Time", IsReadOnly = true });
+            MyDataGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("CustomerName"), Header = "Name" });
+            MyDataGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("CreditCardNo"), Header = "Credit Card" });
+
+            var style = new Style(typeof(ComboBox));
+            style.Setters.Add(new Setter(ComboBox.ItemsSourceProperty, new Binding("DataContext.LaptopTypeList") { RelativeSource = new RelativeSource { AncestorType = typeof(Window) } }));
+            MyDataGrid.Columns.Add(new DataGridComboBoxColumn { Header = "Type", SelectedValueBinding = new Binding("CustomerLaptop.LaptopType") { Mode = BindingMode.TwoWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged }, ElementStyle = style, EditingElementStyle = style });
+
+            var modelStyle = new Style(typeof(ComboBox));
+            modelStyle.Setters.Add(new Setter(ComboBox.ItemsSourceProperty, new Binding("DataContext.BrandList") { RelativeSource = new RelativeSource { AncestorType = typeof(Window) } }));
+            MyDataGrid.Columns.Add(new DataGridComboBoxColumn { Header = "Brand", SelectedValueBinding = new Binding("CustomerLaptop.Brand") { Mode = BindingMode.TwoWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged }, ElementStyle = modelStyle, EditingElementStyle = modelStyle });
+
+            MyDataGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("CustomerLaptop.Model"), Header = "Model" });
+
+            var workStyle = new Style(typeof(ComboBox));
+            workStyle.Setters.Add(new Setter(ComboBox.ItemsSourceProperty, new Binding("DataContext.WorkDoneList") { RelativeSource = new RelativeSource { AncestorType = typeof(Window) } }));
+            MyDataGrid.Columns.Add(new DataGridComboBoxColumn { Header = "Work Done", SelectedValueBinding = new Binding("WorkDone") { Mode = BindingMode.TwoWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged }, ElementStyle = workStyle, EditingElementStyle = workStyle });
+
+            MyDataGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("TechnicianName"), Header = "Technician" });
         }
 
     }
