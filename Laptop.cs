@@ -18,6 +18,6 @@ namespace Final_Project
 
         public string Brand { get; set; }
 
-        public abstract List<string> BrandModelList();
+        public abstract string SpecialWorkDone();
     }
 }

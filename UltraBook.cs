@@ -10,10 +10,9 @@ namespace Final_Project
     {
   
 
-        public override List<string> BrandModelList()
+        public override string SpecialWorkDone()
         {
-            List<string> ultraBookModels = new() { "LG", "Surface", "Samsung" };
-            return ultraBookModels;
+            return "Check internal fans";
         }
 
     }

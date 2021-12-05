@@ -10,10 +10,9 @@ namespace Final_Project
    
     public class GamingLaptop : Laptop
     {
-        public override List<string> BrandModelList()
+        public override string SpecialWorkDone()
         {
-            List<string> gamingLaptopModels = new() { "Lenovo", "AlienWare", "MSI"};
-            return gamingLaptopModels;
+            return "Check software installed and RAM usage";
             
         }
 

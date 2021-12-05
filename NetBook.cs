@@ -10,10 +10,9 @@ namespace Final_Project
     {
 
 
-        public override List<string> BrandModelList()
+        public override string SpecialWorkDone()
         {
-            List<string> netBookModels = new() { "Sony", "Gigabyte", "Asus" };
-            return netBookModels;
+            return "Check Battery";
 
         }
     }

@@ -91,27 +91,22 @@ namespace Final_Project
             if (selectedText == "GamingLaptop")
             {
                 laptop = new GamingLaptop();
-                //BrandList = new ObservableCollection<string>(laptop.BrandModelList());
-                //modelCmbBox.ItemsSource = BrandList;
             }
             else if (selectedText == "UltraBook")
             {
                 laptop = new UltraBook();
-                //UltraBookList = new ObservableCollection<string>(laptop.BrandModelList());
-                //modelCmbBox.ItemsSource = UltraBookList;
             }
             else if (selectedText == "NoteBook")
             {
                 laptop = new NoteBook();
-                //NoteBookList = new ObservableCollection<string>(laptop.BrandModelList());
-                //modelCmbBox.ItemsSource = NoteBookList;
             }
             else if (selectedText == "NetBook")
             {
                 laptop = new NetBook();
-                //NetBookList = new ObservableCollection<string>(laptop.BrandModelList());
-                //modelCmbBox.ItemsSource = NetBookList;
             }
+
+            specialWorkTxt.Text = laptop.SpecialWorkDone();
+            specialWorkTxt.IsEnabled = false;
         }
 
 
@@ -120,6 +115,24 @@ namespace Final_Project
         {
             workDoneCmbBox.ItemsSource = Enum.GetNames(typeof(WorkDoneEnum));
 
+        }
+
+
+        private void appTimeCmbBox_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            if (appTimeCmbBox.SelectedIndex == -1)
+            {
+                addBtn.IsEnabled = false;
+            }
+            else
+            {
+                addBtn.IsEnabled = true;
+            }
+        }
+
+        private void laptopCmbBox_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            LaptopModel((string)laptopCmbBox.SelectedItem);
         }
 
 
@@ -306,16 +319,5 @@ namespace Final_Project
 
         }
 
-        private void appTimeCmbBox_Changed(object sender, SelectionChangedEventArgs e)
-        {
-            if(appTimeCmbBox.SelectedIndex == -1)
-            {
-                addBtn.IsEnabled = false;
-            }
-            else
-            {
-                addBtn.IsEnabled = true;
-            }
-        }
     }
 }
