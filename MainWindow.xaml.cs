@@ -74,22 +74,29 @@ namespace Final_Project
 
         }
 
-        //Brand combo box initialization
+        //Laptop Type combo box initialization
         private void LaptopCmbBox_Init(object sender, EventArgs e)
         {
             laptopCmbBox.ItemsSource = Enum.GetNames(typeof(LaptopTypeEnum));
         }
 
+        //Brand combo box initialization
         private void BrandCmbBox_Init(object sender, EventArgs e)
         {
             brandCmbBox.ItemsSource = Enum.GetNames(typeof(BrandEnum));
         }
 
-        //Initialization of work done combo box
+        //Work done combo box initialization
         private void WorkDone_Init(object sender, EventArgs e)
         {
             workDoneCmbBox.ItemsSource = Enum.GetNames(typeof(WorkDoneEnum));
 
+        }
+
+        //Search combo box initialization
+        private void SearchCmbBox_Init(object sender, EventArgs e)
+        {
+            searchCmbBox.ItemsSource = searchList;
         }
 
         //Brand of every laptop type.
@@ -121,29 +128,25 @@ namespace Final_Project
             specialWorkTxt.IsEnabled = false;
         }
 
+        //Event trigger for the appointment time combo box.
         private void AppTimeCmbBox_Changed(object sender, SelectionChangedEventArgs e)
         {
             addBtn.IsEnabled = appTimeCmbBox.SelectedIndex != -1 ? true : false;
         }
 
+        //Event trigger for the Laptop combo box.
         private void LaptopCmbBox_Changed(object sender, SelectionChangedEventArgs e)
         {
             LaptopModel((string)laptopCmbBox.SelectedItem, true);
         }
 
-
+        //Event trigger for the search combo box.
         private void SearchCmbBox_Changed(object sender, SelectionChangedEventArgs e)
         {
             searchlbl.IsEnabled = false;
             searchlbl.Content = "";
             searchTxt.IsEnabled = searchCmbBox.SelectedIndex != 0;
-        }
-
-        private void SearchCmbBox_Init(object sender, EventArgs e)
-        {
-            searchCmbBox.ItemsSource = searchList;
-        }
-
+        } 
 
         //Add button. This button is responsible for transferring data from the fields to the datagrid.
         private void AddBtn_Click(object sender, RoutedEventArgs e)
@@ -269,21 +272,21 @@ namespace Final_Project
                 {
 
                     var query = from a in AppointmentMade
-                                where a.CustomerName == searchText
+                                where a.CustomerName.Equals(searchText, StringComparison.OrdinalIgnoreCase)
                                 select a;
                     MyDataGrid.ItemsSource = query;
                 }
                 else if (searchCmbBox.SelectedIndex == 2)
                 {
                     var query = from a in AppointmentMade
-                                where a.TechnicianName == searchText
+                                where a.TechnicianName.Equals(searchText, StringComparison.OrdinalIgnoreCase)
                                 select a;
                     MyDataGrid.ItemsSource = query;
                 }
                 else if (searchCmbBox.SelectedIndex == 3)
                 {
                     var query = from a in AppointmentMade
-                                where a.CustomerLaptop.Brand == searchText
+                                where a.CustomerLaptop.Brand.Equals(searchText, StringComparison.OrdinalIgnoreCase)
                                 select a;
                     MyDataGrid.ItemsSource = query;
                 }
@@ -354,7 +357,7 @@ namespace Final_Project
             MyDataGrid.Columns.Add(new DataGridTextColumn { Binding = new Binding("TechnicianName"), Header = "Technician" });
         }
 
-        //TODO: Add a error message in UI
+        //TODO: Add an error message in UI
         private bool ValidateFields()
         {
             bool validate = customerNameTxt.Text != String.Empty  && laptopCmbBox.SelectedIndex != -1 && brandCmbBox.SelectedIndex != -1
