@@ -13,14 +13,19 @@ namespace Final_Project
         //Validate credit card to be numeric and 16 digits only
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            ValidationResult result = !decimal.TryParse((string)value, out decimal number)
-                ? new ValidationResult(false,
-                    "Please input numeric only")
-                : ((string)value).Length != 16
-                    ? new ValidationResult(false,
-                        string.Format("Please input your 16 digit Credit Card Number"))
-                    : ValidationResult.ValidResult;
-            return result;
+            decimal number;
+            if (!decimal.TryParse((string)value, out number))
+            {
+                return new ValidationResult(false, "Please input numeric only");
+            }
+                
+            
+            if (value.ToString().Length != 16)
+            {
+                return new ValidationResult(false, "Please input your 16 digit Credit Card Number");
+            }
+
+            return ValidationResult.ValidResult;
         }
     }
 }

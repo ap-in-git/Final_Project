@@ -44,7 +44,7 @@ namespace Final_Project
         public ObservableCollection<string> BrandList { get; set; }
 
         public ObservableCollection<string> WorkDoneList { get; set; }
-        public ObservableCollection<int> AppTimeList { get; set; }
+        public ObservableCollection<string> AppTimeList { get; set; }
 
         Laptop laptop = null;
         public ObservableCollection<Appointment> AppointmentMade { get => appointmentMade; set => appointmentMade = value; }
@@ -59,17 +59,20 @@ namespace Final_Project
             WorkDoneList = new ObservableCollection<string>(Enum.GetNames(typeof(WorkDoneEnum)));
             BrandList = new ObservableCollection<string>();
             addBtn.IsEnabled = false;
-            AppTimeList = new ObservableCollection<int>();
+            AppTimeList = new ObservableCollection<string>();
             DataContext = this;
 
         }
+
+ 
 
         //Appointment time combo box initialization
         private void AppTimeCmbBox_Init(object sender, EventArgs e)
         {
             for (int i = workStart; i <= workEnd; i++)
             {
-                appTimeCmbBox.Items.Add(i);
+                string displayString = i.ToString() + ":00-" + i.ToString() + ":59 ";
+                appTimeCmbBox.Items.Add(displayString);
             }
 
         }
@@ -154,15 +157,15 @@ namespace Final_Project
             AppointmentMade = new ObservableCollection<Appointment>();
             if (!Validation.GetHasError(creditCardNoTxt) && ValidateFields())
             {
-                var arr = appTimeCmbBox.Items.Cast<int>().Select(item => item).ToArray();
+                var arr = appTimeCmbBox.Items.Cast<string>().Select(item => item).ToArray();
 
-                AppTimeList = new ObservableCollection<int>(arr);
+                AppTimeList = new ObservableCollection<string>(arr);
                 Appointment appointment = new();
                 LaptopModel((string)laptopCmbBox.SelectedItem, true);
                 appointment.CustomerLaptop = laptop;
-                appointment.AppointmentTime = (int)appTimeCmbBox.SelectedItem;
+                appointment.AppointmentTime = (string)appTimeCmbBox.SelectedItem;
                 appointment.CustomerName = customerNameTxt.Text;
-                appointment.CreditCardNo = decimal.Parse(creditCardNoTxt.Text);
+                appointment.CreditCardNo = creditCardNoTxt.Text;
                 appointment.CustomerLaptop.LaptopType = (string)laptopCmbBox.SelectedItem;
                 appointment.CustomerLaptop.Brand = (string)brandCmbBox.SelectedItem;
                 appointment.CustomerLaptop.Model = modelTxt.Text;

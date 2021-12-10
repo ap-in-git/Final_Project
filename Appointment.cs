@@ -9,8 +9,8 @@ namespace Final_Project
     public class Appointment
     {
         public string CustomerName { get; set; }
-        public int AppointmentTime { get; set; }
-        public decimal CreditCardNo { get; set; }
+        public string AppointmentTime { get; set; }
+        public string CreditCardNo { get; set; }
 
         public string WorkDone { get; set; }
 
